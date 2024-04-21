@@ -3,9 +3,9 @@
     "name": "AIEverywhere",
     "description": "Right-click to highlight text in yellow",
     "version": "1.0",
-    "permissions": ["activeTab", "contextMenus", "scripting"],
+    "permissions": ["activeTab", "contextMenus", "scripting", "storage"],
     "background": {
-      "service_worker": "background.js"
+      "service_worker": "service-worker.js"
     },
     "content_scripts": [
       {
@@ -15,17 +15,17 @@
       }
     ],
     "action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "16": "icon16.png",
-        "48": "icon48.png",
-        "128": "icon128.png"
-      }
+        "default_popup": "./Popup/popup.html",
+        "default_icon": {
+            "16": "./assets/icon16.png",
+            "48": "./assets/icon48.png",
+            "128": "./assets/icon128.png"
+        }
     },
     "icons": {
-      "16": "icon16.png",
-      "48": "icon48.png",
-      "128": "icon128.png"
+      "16": "./assets/icon16.png",
+      "48": "./assets/icon48.png",
+      "128": "./assets/icon128.png"
     }
   }
   
