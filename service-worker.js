@@ -21,21 +21,28 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     const selection = info.selectionText;
     if (!selection) return;
 
+    let content = "";
     switch (info.menuItemId) {
         case "improveEnglish":
-            handleRequest("Improve English text", selection, tab);
+            content = "Improve English text: " + selection;
             break;
         case "improveCreative":
-            handleRequest("Make this text more creative", selection, tab);
+            content = "Make this text more creative: " + selection;
             break;
         case "addComments":
-            handleRequest("Add comments to this code", selection, tab);
+            content = "Add comments to this code: " + selection;
             break;
         case "summarize":
-            handleRequest("Summarize this text to a single paragraph", selection, tab);
+            content = "Summarize this text to a single paragraph: " + selection;
             break;
         case "aiQuiz":
-            handleRequest("Create a quiz based on this content", selection, tab);
+            content = "Create a quiz based on this content: " + selection;
             break;
     }
+
+    // Send message to content script to open the sidebar
+    chrome.tabs.sendMessage(tab.id, {
+        action: "openSidebar",
+        content: content
+    });
 });
