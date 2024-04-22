@@ -2,17 +2,17 @@
 #sidebar {
     position: fixed;
     top: 0;
-    right: -300px; /* Start off-screen */
+    right: -300px; /* Start off-screen to be initially hidden */
     width: 300px;
     height: 100vh;
     background-color: #fff;
     border-left: 1px solid #ccc;
     z-index: 100000;
     overflow-y: auto;
-    transition: right 0.5s;
-    padding: 20px; /* Ensure padding is in CSS */
+    padding: 20px;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
+    transition: right 0.5s ease-in-out; /* Smooth transition for the 'right' property */
 }
 
 #sidebar h1 {
@@ -24,4 +24,22 @@
     font-size: 16px;
     line-height: 1.5;
     color: #666;
+}
+
+#toggleButton {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 100001;
+    padding: 5px 10px;
+    background-color: #5c67f2; /* Blue background */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#toggleButton:hover {
+    background-color: #4048cc; /* Darker blue on hover */
 }
