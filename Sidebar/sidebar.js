@@ -2,7 +2,7 @@
 let isSidebarOpen = false; // State variable to track sidebar visibility
 
 createSidebar();
-createToggleButton();
+createToggleButton()
 
 function createSidebar() {
     let sidebar = document.getElementById('sidebar');

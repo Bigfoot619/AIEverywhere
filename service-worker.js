@@ -1,3 +1,6 @@
+
+// importScripts('./OpenAI/improveEng.js');
+
 chrome.runtime.onInstalled.addListener(function () {
     const contexts = ["selection"];
     const menuItems = [
@@ -24,7 +27,14 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     let content = "";
     switch (info.menuItemId) {
         case "improveEnglish":
-            content = "Improve English text: " + selection;
+            improveEnglish(info.selectionText).then(enhancedText => {
+                chrome.tabs.sendMessage(tab.id, {
+                    action: "openSidebar",
+                    content: enhancedText
+                });
+            }).catch(error => {
+                console.error("Error improving English: ", error);
+            });
             break;
         case "improveCreative":
             content = "Make this text more creative: " + selection;
