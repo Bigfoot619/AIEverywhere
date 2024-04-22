@@ -22,7 +22,11 @@ function createToggleButton() {
         toggleButton.id = 'toggleButton';
         toggleButton.innerText = 'Open'; // Set initial text as 'Open'
         toggleButton.addEventListener('click', function () {
-            toggleSidebar();
+            if (isSidebarOpen) {
+                closeSidebar();  // Function to close the sidebar
+            } else {
+                openSidebar();  // Function to open the sidebar
+            }
         });
         document.body.appendChild(toggleButton); // Ensure button is also appended to the body
     }
@@ -31,18 +35,23 @@ function createToggleButton() {
 
 function toggleSidebar(content) {
     const sidebar = document.getElementById('sidebar');
-    const toggleButton = document.getElementById('toggleButton');
-
-    if (isSidebarOpen) {
-        sidebar.style.right = '-300px'; // Move off-screen to hide
-        toggleButton.innerText = 'Open';
-        isSidebarOpen = false;
-    } else {
-        sidebar.style.right = '0'; // Move on-screen to show
-        toggleButton.innerText = 'Close';
-        isSidebarOpen = true;
-        if (content) {
-            sidebar.getElementsByTagName('p')[0].innerHTML = content; // Optionally update content
-        }
+    if (content) {
+        sidebar.getElementsByTagName('p')[0].innerHTML = content; // Update content if provided
     }
+}
+
+function openSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const toggleButton = document.getElementById('toggleButton');
+    sidebar.style.right = '0'; // Move on-screen to show
+    toggleButton.innerText = 'Close';
+    isSidebarOpen = true;
+}
+
+function closeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const toggleButton = document.getElementById('toggleButton');
+    sidebar.style.right = '-300px'; // Move off-screen to hide
+    toggleButton.innerText = 'Open';
+    isSidebarOpen = false;
 }

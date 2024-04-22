@@ -7,8 +7,7 @@
         "activeTab",
         "contextMenus",
         "scripting",
-        "storage",
-        "https://api.openai.com/"
+        "storage"
     ],
     "background": {
         "service_worker": "service-worker.js"
@@ -20,7 +19,7 @@
             ],
             "js": [
                 "content_script.js",
-                "OpenAI/improveEng.js",
+                "OpenAI/improveEnglish.js",
                 "Popup/popup.js",
                 "Sidebar/sidebar.js"
             ],
