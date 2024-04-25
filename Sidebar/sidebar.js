@@ -1,18 +1,12 @@
-
 let isSidebarOpen = false; // State variable to track sidebar visibility
 let sidebar = null; // Global reference to the sidebar element
 let toggleButton = null; // Global reference to the toggle button
-
 
 initUI();
 
 function initUI() {
     createSidebar();
     createToggleButton();
-}
-
-function formatContent(subTitle1, content1, subTitle2, content2) {
-    return `<h2>${subTitle1}</h2><p>${content1}</p><br><h2>${subTitle2}</h2><p>${content2}</p>`;
 }
 
 function createSidebar() {
@@ -64,22 +58,11 @@ function updateSidebarContent(title, originalContent, enhancedContent) {
     enhancedContent = normalizeText(enhancedContent);
     sidebar.getElementsByTagName('h1')[0].innerHTML = title;
     if (originalContent.split(/\s+/).length < 150) {
-        sidebar.getElementsByTagName('p')[0].innerHTML = formatContent('Original Content', originalContent, 'Enhanced Content', enhancedContent);
+        sidebar.getElementsByTagName('p')[0].innerHTML = formatContentImproveEnglish('Original Content', originalContent, 'Enhanced Content', enhancedContent);
     }
     else {
-        sidebar.getElementsByTagName('p')[0].innerHTML = formatContent('Error: Overload Content!', '', 'Enhanced Content', enhancedContent);
+        sidebar.getElementsByTagName('p')[0].innerHTML = formatContentImproveEnglish('Error: Overload Content!', '', 'Enhanced Content', enhancedContent);
     }
-
-}
-
-function normalizeText(text) {
-    // Normalize spaces globally
-    text = text.replace(/\s+/g, ' ').trim();
-    // Remove spaces before commas, periods, question marks, and exclamation marks
-    text = text.replace(/\s+([,\.?!])/g, '$1');
-    // Ensure there is exactly one space after punctuation if followed by a letter (not another punctuation)
-    text = text.replace(/([,\.?!])([^\s])/g, '$1 $2');
-    return text;
 }
 
 function toggleSidebarState() {
@@ -100,4 +83,25 @@ function closeSidebar() {
     sidebar.style.right = '-300px'; // Move off-screen to hide
     toggleButton.innerText = 'Open';
     isSidebarOpen = false;
+}
+
+// Function to format content for Improve English feature
+function formatContentImproveEnglish(subTitle1, content1, subTitle2, content2) {
+    return `<h2>${subTitle1}</h2><p>${content1}</p><br><h2>${subTitle2}</h2><p>${content2}</p>`;
+}
+
+// Function to format content for Add Comments feature
+function formatContentAddComments(title, enhancedContent) {
+    return `<h2>${title}</h2><p>${enhancedContent}</p>`;
+}
+
+// Function to normalize text by removing unnecessary spaces and formatting punctuation
+function normalizeText(text) {
+    // Normalize spaces globally
+    text = text.replace(/\s+/g, ' ').trim();
+    // Remove spaces before commas, periods, question marks, and exclamation marks
+    text = text.replace(/\s+([,\.?!])/g, '$1');
+    // Ensure there is exactly one space after punctuation if followed by a letter (not another punctuation)
+    text = text.replace(/([,\.?!])([^\s])/g, '$1 $2');
+    return text;
 }

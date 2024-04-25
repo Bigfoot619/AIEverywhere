@@ -1,8 +1,23 @@
-async function improveEnglish(text, isCreative = false) {
-    const temperature = isCreative ? 0.9 : 0.5; // High temperature for creative, standard for normal
-    const promptText = isCreative ? "You are an English teacher. Creatively improve the following text:" :
-        "You are an English teacher. Improve the following text to professional English standards:";
-    return fetchFromOpenAI(text, promptText, temperature, 150);
+// A function to call OpenAI's GPT model to generate comments for code
+async function addComments(code) {
+    if (!isCode(code)) {
+        return '<br>Error!<br>This is not a code!';
+    }
+    const promptText = "You are a programming mentor. Add insightful comments to this code:";
+    return fetchFromOpenAI(code, promptText, 0.3, 250); // Using a lower temperature for more relevant, factual comments
+}
+
+function isCode(text) {
+    // Basic JavaScript syntax patterns
+    const patterns = [
+        /\b(function|var|let|const|if|else|return|class|import|export)\b/, // JS keywords
+        /[{;}]/, // Common JS syntax characters
+        /\bconsole\.log\(/, // Example of common function call in JS
+        /=>/, // Arrow functions
+        /[\+\-\*\/]=?/ // Mathematical operators
+    ];
+
+    return patterns.filter(pattern => pattern.test(text)).length >= 3;
 }
 
 // apiHelper.js

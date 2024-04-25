@@ -1,5 +1,6 @@
-
 importScripts('./OpenAI/improveEnglish.js');
+importScripts('./OpenAI/addComments.js');
+
 
 chrome.runtime.onInstalled.addListener(function () {
     const contexts = ["selection"];
@@ -23,8 +24,6 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     const selection = info.selectionText;
     if (!selection) return;
-
-    let content = "";
     switch (info.menuItemId) {
         case "improveEnglish":
             improveEnglish(selection).then(enhancedText => {
@@ -51,7 +50,16 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             });
             break;
         case "addComments":
-            content = "Add comments to this code: " + selection;
+            addComments(selection).then(enhancedText => {
+                chrome.tabs.sendMessage(tab.id, {
+                    action: "openSidebar",
+                    title: "Code with Comments",
+                    originalContent: selection,
+                    enhancedContent: enhancedText
+                });
+            }).catch(error => {
+                console.error("Error adding comments: ", error);
+            });
             break;
         case "summarize":
             content = "Summarize this text to a single paragraph: " + selection;

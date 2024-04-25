@@ -19,6 +19,7 @@
             ],
             "js": [
                 "content_script.js",
+                "OpenAI/addComments.js",
                 "OpenAI/improveEnglish.js",
                 "Popup/popup.js",
                 "Sidebar/sidebar.js"
