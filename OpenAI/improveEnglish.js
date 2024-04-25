@@ -1,31 +1,27 @@
-async function improveEnglish(text) {
-    // Define a function to estimate token count (simplistic approach)
-    function estimateTokenCount(text) {
-        return text.split(/\s+/).length;  // A rough estimate based on spaces
-    }
+async function improveEnglish(text, isCreative = false) {
+    const temperature = isCreative ? 0.9 : 0.5; // High temperature for creative, standard for normal
+    const promptText = isCreative ? "You are an English teacher. Creatively improve the following text:" :
+        "You are an English teacher. Improve the following text to professional English standards:";
 
-    // Calculate token count for user's input
-    const userTokens = estimateTokenCount(text);
-    const systemTokens = estimateTokenCount("You are an English teacher. Improve the following text to professional English standards:");
-    const totalTokens = userTokens + systemTokens;
+    const userTokens = text.split(/\s+/).length;  // A rough estimate based on spaces
+    const systemTokens = promptText.split(/\s+/).length;
 
-    // Check if the total token count exceeds the model's max_tokens setting
-    if (totalTokens > 150) {
-        return `Text is too long to process (estimated ${totalTokens} tokens). Please reduce the text length and try again.`;
+    if (userTokens + systemTokens > 150) {
+        return `Text is too long to process (estimated ${userTokens + systemTokens} tokens). Please reduce the text length and try again.`;
     }
 
     const data = {
         model: "gpt-3.5-turbo",
         messages: [{
             role: "system",
-            content: "You are an English teacher. Improve the following text to professional English standards:"
+            content: promptText
         },
         {
             role: "user",
             content: text
         }],
-        max_tokens: 150,  // Recommended default for moderate length completions
-        temperature: 0.5  // Balanced value between randomness and coherence
+        max_tokens: 150,
+        temperature: temperature
     };
 
     try {
@@ -43,7 +39,7 @@ async function improveEnglish(text) {
         }
 
         const result = await response.json();
-        return result.choices[0].message.content.trim();  // Note the difference in how the response is parsed
+        return result.choices[0].message.content.trim();
     } catch (error) {
         console.error("Failed to improve English with OpenAI: ", error);
         return "Failed to improve text due to an error.";

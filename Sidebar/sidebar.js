@@ -63,7 +63,13 @@ function updateSidebarContent(title, originalContent, enhancedContent) {
     originalContent = normalizeText(originalContent);
     enhancedContent = normalizeText(enhancedContent);
     sidebar.getElementsByTagName('h1')[0].innerHTML = title;
-    sidebar.getElementsByTagName('p')[0].innerHTML = formatContent('Original Content', originalContent, 'Enhanced Content', enhancedContent);
+    if (originalContent.split(/\s+/).length < 150) {
+        sidebar.getElementsByTagName('p')[0].innerHTML = formatContent('Original Content', originalContent, 'Enhanced Content', enhancedContent);
+    }
+    else {
+        sidebar.getElementsByTagName('p')[0].innerHTML = formatContent('Error: Overload Content!', '', 'Enhanced Content', enhancedContent);
+    }
+
 }
 
 function normalizeText(text) {

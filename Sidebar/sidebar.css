@@ -5,7 +5,7 @@
     right: -300px; /* Start off-screen to be initially hidden */
     width: 300px;
     height: 100vh;
-    background-color: #f8f9fa;
+    background-color: #dae6f1;
     border-left: 3px solid #007bff;
     z-index: 100000;
     overflow-y: auto;

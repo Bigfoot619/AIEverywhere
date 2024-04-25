@@ -39,7 +39,16 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             });
             break;
         case "improveCreative":
-            content = "Make this text more creative: " + selection;
+            improveEnglish(selection, true).then(enhancedText => {
+                chrome.tabs.sendMessage(tab.id, {
+                    action: "openSidebar",
+                    title: "Creatively Improved English",
+                    originalContent: selection,
+                    enhancedContent: enhancedText
+                });
+            }).catch(error => {
+                console.error("Error improving English creatively: ", error);
+            });
             break;
         case "addComments":
             content = "Add comments to this code: " + selection;
