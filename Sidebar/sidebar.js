@@ -57,13 +57,20 @@ function updateSidebarContent(title, originalContent, enhancedContent) {
     originalContent = normalizeText(originalContent);
     enhancedContent = normalizeText(enhancedContent);
     sidebar.getElementsByTagName('h1')[0].innerHTML = title;
+
     if (originalContent.split(/\s+/).length < 150) {
-        sidebar.getElementsByTagName('p')[0].innerHTML = formatContentImproveEnglish('Original Content', originalContent, 'Enhanced Content', enhancedContent);
+        if (title === "Code with Comments") {
+            enhancedContent = formatCodeForDisplay(enhancedContent);
+        }
+        if (title === "Improve English Version" || title === "Creatively Improved English" || title === "Summary") {
+            sidebar.getElementsByTagName('p')[0].innerHTML = formatContentImproveEnglish('<br>Original Content', originalContent, '<br>Enhanced Content', enhancedContent);
+        }
     }
     else {
-        sidebar.getElementsByTagName('p')[0].innerHTML = formatContentImproveEnglish('Error: Overload Content!', '', 'Enhanced Content', enhancedContent);
+        sidebar.getElementsByTagName('p')[0].innerHTML = formatContentImproveEnglish('<br>Error: Overload Content!', '', '<br>Enhanced Content', enhancedContent);
     }
 }
+
 
 function toggleSidebarState() {
     if (isSidebarOpen) {
@@ -90,18 +97,26 @@ function formatContentImproveEnglish(subTitle1, content1, subTitle2, content2) {
     return `<h2>${subTitle1}</h2><p>${content1}</p><br><h2>${subTitle2}</h2><p>${content2}</p>`;
 }
 
-// Function to format content for Add Comments feature
 function formatContentAddComments(title, enhancedContent) {
     return `<h2>${title}</h2><p>${enhancedContent}</p>`;
 }
 
-// Function to normalize text by removing unnecessary spaces and formatting punctuation
 function normalizeText(text) {
-    // Normalize spaces globally
     text = text.replace(/\s+/g, ' ').trim();
-    // Remove spaces before commas, periods, question marks, and exclamation marks
     text = text.replace(/\s+([,\.?!])/g, '$1');
-    // Ensure there is exactly one space after punctuation if followed by a letter (not another punctuation)
     text = text.replace(/([,\.?!])([^\s])/g, '$1 $2');
     return text;
+}
+
+function formatCodeForDisplay(code) {
+    const escapedCode = escapeHTML(code);
+    return `<pre>${escapedCode}</pre>`;
+}
+
+function escapeHTML(code) {
+    return code.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }

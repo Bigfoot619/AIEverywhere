@@ -3,8 +3,8 @@ async function addComments(code) {
     if (!isCode(code)) {
         return '<br>Error!<br>This is not a code!';
     }
-    const promptText = "You are a programming mentor. Add insightful comments to this code:";
-    return fetchFromOpenAI(code, promptText, 0.3, 250); // Using a lower temperature for more relevant, factual comments
+    const promptText = "You are an expert programmer. Show me just the code no explainations!. Add comments to this code:";
+    return fetchFromOpenAI(code, promptText, 0.5, 200); // Using a lower temperature for more relevant, factual comments
 }
 
 function isCode(text) {

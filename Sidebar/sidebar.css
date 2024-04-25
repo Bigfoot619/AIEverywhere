@@ -2,7 +2,7 @@
 #sidebar {
     position: fixed;
     top: 0;
-    right: -300px; /* Start off-screen to be initially hidden */
+    right: -300px;
     width: 300px;
     height: 100vh;
     background-color: #dae6f1;
@@ -12,23 +12,33 @@
     padding: 20px;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
-    transition: right 0.5s ease-in-out; /* Smooth transition for the 'right' property */
-    box-shadow: -4px 0 6px -3px #333; /* Adding shadow for depth */
+    transition: right 0.5s ease-in-out;
+    box-shadow: -4px 0 6px -3px #333;
+}
+
+#sidebar h1, #sidebar h2 {
+    color: #007bff;
+    margin-top: 0;
+    text-shadow: 1px 1px 1px #666;
 }
 
 #sidebar h1 {
-    color: #007bff; /* Theme color */
-    font-size: 24px; /* Larger size for visibility */
-    font-weight: bold; /* Make it bold */
-    margin-top: 0;
-    text-shadow: 1px 1px 1px #666; /* Text shadow for better readability */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#sidebar h2 {
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 5px;
 }
 
 #sidebar p {
     font-size: 16px;
     line-height: 1.5;
     color: #333;
-    text-align: justify; /* Improving the flow of text */
+    text-align: justify;
+    white-space: pre-wrap;
 }
 
 #toggleButton {
@@ -37,24 +47,16 @@
     right: 0;
     transform: translateY(-50%);
     z-index: 100001;
-    padding: 8px 15px; /* More padding for a better touch area */
-    background-color: #5c67f2; /* Blue background */
+    padding: 8px 15px;
+    background-color: #5c67f2;
     color: white;
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    box-shadow: 0 2px 4px #444; /* Shadow for 3D effect */
+    box-shadow: 0 2px 4px #444;
 }
 
 #toggleButton:hover {
-    background-color: #4048cc; /* Darker blue on hover */
-    box-shadow: 0 2px 6px #333; /* More prominent shadow on hover */
-}
-
-#sidebar h2 {
-    color: #007bff; /* Theme color, lighter than h1 */
-    font-size: 18px; /* Smaller than h1 for distinction */
-    font-weight: normal; /* Less emphasis than h1 */
-    margin-top: 10px;
-    margin-bottom: 5px; /* Spacing before content */
+    background-color: #4048cc;
+    box-shadow: 0 2px 6px #333;
 }

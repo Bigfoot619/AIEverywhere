@@ -1,5 +1,6 @@
 importScripts('./OpenAI/improveEnglish.js');
 importScripts('./OpenAI/addComments.js');
+importScripts('./OpenAI/summarize.js');
 
 
 chrome.runtime.onInstalled.addListener(function () {
@@ -62,7 +63,16 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             });
             break;
         case "summarize":
-            content = "Summarize this text to a single paragraph: " + selection;
+            summarize(selection).then(enhancedText => {
+                chrome.tabs.sendMessage(tab.id, {
+                    action: "openSidebar",
+                    title: "Summary",
+                    originalContent: selection,
+                    enhancedContent: enhancedText
+                });
+            }).catch(error => {
+                console.error("Error summarizing: ", error);
+            });
             break;
         case "aiQuiz":
             content = "Create a quiz based on this content: " + selection;

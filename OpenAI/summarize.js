@@ -1,8 +1,7 @@
-async function improveEnglish(text, isCreative = false) {
-    const temperature = isCreative ? 0.9 : 0.5; // High temperature for creative, standard for normal
-    const promptText = isCreative ? "You are an English teacher. Creatively improve the following text:" :
-        "You are an English teacher. Improve the following text to professional English standards:";
-    return fetchFromOpenAI(text, promptText, temperature, 200);
+// A function to call OpenAI's GPT model to generate comments for code
+async function summarize(text) {
+    const promptText = "Summary the following text into one paragraph only:";
+    return fetchFromOpenAI(text, promptText, 0.5, 200); // Using a lower temperature for more relevant, factual comments
 }
 
 // apiHelper.js
@@ -11,7 +10,7 @@ async function fetchFromOpenAI(text, promptText, temperature, num_tokens) {
     const systemTokens = promptText.split(/\s+/).length;
 
     if (userTokens + systemTokens > num_tokens) {
-        return `Text is too long to process (estimated ${userTokens + systemTokens} tokens). Please reduce the text length and try again.`;
+        return `Text is too long to process (estimated ~${userTokens + systemTokens} tokens). Please reduce the text length and try again.`;
     }
 
     const data = {
