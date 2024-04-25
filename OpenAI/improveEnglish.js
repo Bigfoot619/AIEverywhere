@@ -1,4 +1,19 @@
 async function improveEnglish(text) {
+    // Define a function to estimate token count (simplistic approach)
+    function estimateTokenCount(text) {
+        return text.split(/\s+/).length;  // A rough estimate based on spaces
+    }
+
+    // Calculate token count for user's input
+    const userTokens = estimateTokenCount(text);
+    const systemTokens = estimateTokenCount("You are an English teacher. Improve the following text to professional English standards:");
+    const totalTokens = userTokens + systemTokens;
+
+    // Check if the total token count exceeds the model's max_tokens setting
+    if (totalTokens > 150) {
+        return `Text is too long to process (estimated ${totalTokens} tokens). Please reduce the text length and try again.`;
+    }
+
     const data = {
         model: "gpt-3.5-turbo",
         messages: [{
@@ -8,14 +23,16 @@ async function improveEnglish(text) {
         {
             role: "user",
             content: text
-        }]
+        }],
+        max_tokens: 150,  // Recommended default for moderate length completions
+        temperature: 0.5  // Balanced value between randomness and coherence
     };
 
     try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer sk-proj-mWBBoF3HUtt5VRTa3qW6T3BlbkFJETOliAbuy7jjHPkKmGHy`,  // Make sure to secure your API key properly
+                'Authorization': `Bearer sk-proj-SlZJ0i6IXWElnmPXIPQ1T3BlbkFJmJAyu1kgWBgswiX5COeY`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)

@@ -30,7 +30,9 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             improveEnglish(selection).then(enhancedText => {
                 chrome.tabs.sendMessage(tab.id, {
                     action: "openSidebar",
-                    content: enhancedText
+                    title: "Improve English Version",
+                    originalContent: selection,
+                    enhancedContent: enhancedText
                 });
             }).catch(error => {
                 console.error("Error improving English: ", error);
@@ -49,10 +51,4 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             content = "Create a quiz based on this content: " + selection;
             break;
     }
-
-    // Send message to content script to open the sidebar
-    chrome.tabs.sendMessage(tab.id, {
-        action: "openSidebar",
-        content: content
-    });
 });
