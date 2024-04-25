@@ -1,6 +1,7 @@
 importScripts('./OpenAI/improveEnglish.js');
 importScripts('./OpenAI/addComments.js');
 importScripts('./OpenAI/summarize.js');
+importScripts('./OpenAI/quiz.js');
 
 
 chrome.runtime.onInstalled.addListener(function () {
@@ -51,31 +52,39 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             });
             break;
         case "addComments":
-            addComments(selection).then(enhancedText => {
+            addComments(selection).then(commentText => {
                 chrome.tabs.sendMessage(tab.id, {
                     action: "openSidebar",
                     title: "Code with Comments",
                     originalContent: selection,
-                    enhancedContent: enhancedText
+                    enhancedContent: commentText
                 });
             }).catch(error => {
                 console.error("Error adding comments: ", error);
             });
             break;
         case "summarize":
-            summarize(selection).then(enhancedText => {
+            summarize(selection).then(summary => {
                 chrome.tabs.sendMessage(tab.id, {
                     action: "openSidebar",
                     title: "Summary",
                     originalContent: selection,
-                    enhancedContent: enhancedText
+                    enhancedContent: summary
                 });
             }).catch(error => {
                 console.error("Error summarizing: ", error);
             });
             break;
         case "aiQuiz":
-            content = "Create a quiz based on this content: " + selection;
-            break;
+            generate_quiz(selection).then(quizHTML => {
+                chrome.tabs.sendMessage(tab.id, {
+                    action: "openSidebar",
+                    title: "AI Quiz",
+                    originalContent: selection,
+                    enhancedContent: quizHTML
+                });
+            }).catch(error => {
+                console.error("Error generating quiz: ", error);
+            }); break;
     }
 });

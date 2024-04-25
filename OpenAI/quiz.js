@@ -1,7 +1,22 @@
-// A function to call OpenAI's GPT model to generate comments for code
-async function summarize(text) {
-    const promptText = "Summary the following text into one paragraph only:";
-    return fetchFromOpenAI(text, promptText, 0.5, 200); // Using a lower temperature for more relevant, factual comments
+async function generate_quiz(text) {
+    const promptText = "generate a quiz with 10 multiple-choice questions, each having four options, from a given text and display the correct answer in green and bold. make it attractive and good looking";
+    const num_tokens = 750; // Adjust based on your needs and token limits
+    const temperature = 0.5; // Lower temperature for more consistent outputs
+
+    try {
+        const quizContent = await fetchFromOpenAI(text, promptText, temperature, num_tokens);
+        return formatQuizForDisplay(quizContent);
+    } catch (error) {
+        console.error("Error generating quiz: ", error);
+        return "Failed to generate the quiz due to an error.";
+    }
+}
+
+function formatQuizForDisplay(quizContent) {
+    // Assuming the API returns the quiz content with correct answers marked in a specific way, e.g., **correct answer**
+    // You would need to parse and replace the correct answer formatting from the API's output to HTML.
+    const quizHtml = quizContent.replace(/\*\*(.*?)\*\*/g, '<strong style="color:green;">$1</strong>');
+    return `<div>${quizHtml}</div>`;
 }
 
 async function fetchFromOpenAI(text, promptText, temperature, num_tokens) {

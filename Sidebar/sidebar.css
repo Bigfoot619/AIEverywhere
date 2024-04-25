@@ -12,7 +12,7 @@
     padding: 20px;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
-    transition: right 0.5s ease-in-out;
+    transition: right 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out;
     box-shadow: -4px 0 6px -3px #333;
 }
 
@@ -59,4 +59,29 @@
 #toggleButton:hover {
     background-color: #4048cc;
     box-shadow: 0 2px 6px #333;
+}
+
+.quiz-container {
+    margin: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.quiz-question h3 {
+    color: #333;
+}
+
+.quiz-question ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.quiz-question li {
+    margin: 8px 0;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #eef;
+    cursor: pointer; /* if you want the items to be selectable/clickable */
 }

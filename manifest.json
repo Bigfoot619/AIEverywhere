@@ -21,6 +21,8 @@
                 "content_script.js",
                 "OpenAI/addComments.js",
                 "OpenAI/improveEnglish.js",
+                "OpenAI/quiz.js",
+                "OpenAI/summarize.js",
                 "Popup/popup.js",
                 "Sidebar/sidebar.js"
             ],

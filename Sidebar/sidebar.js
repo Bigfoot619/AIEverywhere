@@ -58,16 +58,21 @@ function updateSidebarContent(title, originalContent, enhancedContent) {
     enhancedContent = normalizeText(enhancedContent);
     sidebar.getElementsByTagName('h1')[0].innerHTML = title;
 
-    if (originalContent.split(/\s+/).length < 150) {
+    if (originalContent.split(/\s+/).length < 200) {
         if (title === "Code with Comments") {
-            enhancedContent = formatCodeForDisplay(enhancedContent);
+            sidebar.getElementsByTagName('p')[0].innerHTML = formatCodeForDisplay(enhancedContent);
+            sidebar.style.width = '300px';
+        } else if (title === "Improve English Version" || title === "Creatively Improved English" || title === "Summary") {
+            sidebar.getElementsByTagName('p')[0].innerHTML = formatContentImproveEnglish('Original Content', originalContent, 'Enhanced Content', enhancedContent);
+            sidebar.style.width = '300px';
         }
-        if (title === "Improve English Version" || title === "Creatively Improved English" || title === "Summary") {
-            sidebar.getElementsByTagName('p')[0].innerHTML = formatContentImproveEnglish('<br>Original Content', originalContent, '<br>Enhanced Content', enhancedContent);
-        }
+    } else {
+        sidebar.getElementsByTagName('p')[0].innerHTML = formatContentImproveEnglish('Error: Overload Content!', '', 'Enhanced Content', enhancedContent);
+        sidebar.style.width = '300px';
     }
-    else {
-        sidebar.getElementsByTagName('p')[0].innerHTML = formatContentImproveEnglish('<br>Error: Overload Content!', '', '<br>Enhanced Content', enhancedContent);
+    if (title === "AI Quiz") {
+        sidebar.getElementsByTagName('p')[0].innerHTML = formatQuizForDisplay(enhancedContent);
+        sidebar.style.width = '600px';
     }
 }
 
@@ -120,3 +125,30 @@ function escapeHTML(code) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
 }
+
+function formatQuizForDisplay(quizContent) {
+    // Assuming the quiz content comes in a structured format that needs to be parsed
+    // For example, if the correct answer is wrapped with special markers like **correct**
+    // We'll convert that into HTML, highlighting the correct answer in green and bold
+
+    const questionBlocks = quizContent.split(/\n\n/); // Assuming each question block is separated by two newlines
+    let formattedQuiz = '';
+
+    questionBlocks.forEach(block => {
+        const lines = block.trim().split('\n');
+        let formattedQuestion = `<div class='quiz-question'><h3>${lines[0]}</h3><ul>`;
+
+        lines.slice(1).forEach((line, index) => {
+            if (line.includes('**')) { // Assuming '**' marks the correct answer
+                line = line.replace(/\*\*(.*?)\*\*/, `<strong style="color:green;">$1</strong>`); // Highlight correct
+            }
+            formattedQuestion += `<li>${line}</li>`;
+        });
+
+        formattedQuestion += '</ul></div>';
+        formattedQuiz += formattedQuestion;
+    });
+
+    return `<div class="quiz-container">${formattedQuiz}</div>`;
+}
+
