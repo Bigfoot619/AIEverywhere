@@ -1,5 +1,5 @@
 async function generate_quiz(text) {
-    const promptText = "generate a quiz with 10 multiple-choice questions, each having four options, from a given text and display the correct answer in green and bold. make it attractive and good looking";
+    const promptText = "generate a quiz with 10 multiple-choice questions, each having four options, from a given text and display the correct answers. no need headlines. every answer choice is maximum 20 letters long (including spaces). display the answers at the end after all questions. make it attractive and good looking";
     const num_tokens = 750; // Adjust based on your needs and token limits
     const temperature = 0.5; // Lower temperature for more consistent outputs
 
@@ -13,10 +13,29 @@ async function generate_quiz(text) {
 }
 
 function formatQuizForDisplay(quizContent) {
-    // Assuming the API returns the quiz content with correct answers marked in a specific way, e.g., **correct answer**
-    // You would need to parse and replace the correct answer formatting from the API's output to HTML.
-    const quizHtml = quizContent.replace(/\*\*(.*?)\*\*/g, '<strong style="color:green;">$1</strong>');
-    return `<div>${quizHtml}</div>`;
+    // Parsing the quiz content where each question block is separated by two newlines.
+    // We assume that each answer choice is also separated by a newline within each question block.
+    const questionBlocks = quizContent.split(/\n\n/); // Split questions by double newline
+    let formattedQuiz = '';
+
+    questionBlocks.forEach(block => {
+        const lines = block.trim().split('\n'); // Split each block into lines
+        let formattedQuestion = `<div class='quiz-question'><h3>${lines[0]}</h3><ul style='list-style-type: none;'>`; // Style as you see fit
+
+        lines.slice(1).forEach((line, index) => {
+            // Highlight the correct answer in green and bold, assuming '**' marks the correct answer
+            if (line.includes('**')) {
+                line = line.replace(/\*\*(.*?)\*\*/, `<strong style="color:green;">$1</strong>`);
+            }
+            // Display each choice on a new line
+            formattedQuestion += `<li>${line}</li>`;
+        });
+
+        formattedQuestion += '</ul></div>';
+        formattedQuiz += formattedQuestion;
+    });
+
+    return `<div class="quiz-container" style="white-space: pre-line;">${formattedQuiz}</div>`; // Ensure each question is on a new line
 }
 
 async function fetchFromOpenAI(text, promptText, temperature, num_tokens) {

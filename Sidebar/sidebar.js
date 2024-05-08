@@ -45,12 +45,13 @@ function createToggleButtonElement() {
     document.body.appendChild(button);
     return button;
 }
+//////////////////////////////////////////////////////////////////////////////////////
 
-function toggleSidebar(title, originalContent, enhancedContent) {
+function toggleSidebar(title = '', originalContent = '', enhancedContent = '') {
     if (title && originalContent && enhancedContent) {
         updateSidebarContent(title, originalContent, enhancedContent);
+        openSidebar();
     }
-    openSidebar();
 }
 
 function updateSidebarContent(title, originalContent, enhancedContent) {
@@ -71,8 +72,8 @@ function updateSidebarContent(title, originalContent, enhancedContent) {
         sidebar.style.width = '300px';
     }
     if (title === "AI Quiz") {
-        sidebar.getElementsByTagName('p')[0].innerHTML = formatQuizForDisplay(enhancedContent);
-        sidebar.style.width = '600px';
+        sidebar.getElementsByTagName('p')[0].innerHTML = enhancedContent;
+        sidebar.style.width = '300px';
     }
 }
 
@@ -102,9 +103,6 @@ function formatContentImproveEnglish(subTitle1, content1, subTitle2, content2) {
     return `<h2>${subTitle1}</h2><p>${content1}</p><br><h2>${subTitle2}</h2><p>${content2}</p>`;
 }
 
-function formatContentAddComments(title, enhancedContent) {
-    return `<h2>${title}</h2><p>${enhancedContent}</p>`;
-}
 
 function normalizeText(text) {
     text = text.replace(/\s+/g, ' ').trim();
@@ -115,15 +113,20 @@ function normalizeText(text) {
 
 function formatCodeForDisplay(code) {
     const escapedCode = escapeHTML(code);
-    return `<pre>${escapedCode}</pre>`;
+    // Convert newlines to <br> to render them correctly in HTML
+    const formattedCode = escapedCode.replace(/\n/g, '<br>');
+    return `<p>${formattedCode}</p>`;
 }
 
 function escapeHTML(code) {
-    return code.replace(/&/g, '&amp;')
+    let escapedCode = code.replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+    // Reintroduce <br> tags after escaping
+    escapedCode = escapedCode.replace(/&lt;br&gt;/g, '<br>');
+    return escapedCode;
 }
 
 function formatQuizForDisplay(quizContent) {

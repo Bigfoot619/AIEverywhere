@@ -62,6 +62,7 @@
 }
 
 .quiz-container {
+
     margin: 10px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -70,6 +71,7 @@
 }
 
 .quiz-question h3 {
+    font-size: 18px;
     color: #333;
 }
 
@@ -79,6 +81,7 @@
 }
 
 .quiz-question li {
+    font-size: 12px;
     margin: 8px 0;
     padding: 4px;
     border-radius: 4px;

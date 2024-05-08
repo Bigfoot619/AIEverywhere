@@ -4,3 +4,4 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         window.toggleSidebar(request.title, request.originalContent, request.enhancedContent);
     }
 });
+

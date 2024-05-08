@@ -3,24 +3,44 @@ async function addComments(code) {
     if (!isCode(code)) {
         return '<br>Error!<br>This is not a code!';
     }
-    const promptText = "You are an expert programmer. Show me just the code no explainations!. Add comments to this code:";
-    return fetchFromOpenAI(code, promptText, 0.5, 200); // Using a lower temperature for more relevant, factual comments
+    const promptText = "You are an expert programmer. Show me the full code no explainations!. Add detailed comments to this code:";
+    const commentedCode = await fetchFromOpenAI(promptText, code, 0.5, 800); // Adjusted token count for detailed comments
+    return formatCodeFromAI(commentedCode); // Format the code from AI for display}
+}
+// Post-process code from OpenAI to ensure correct formatting for display
+function formatCodeFromAI(code) {
+    let cleanedCode = code.replace(/```[\w+]*\n?/g, ''); // Removes Markdown code block syntax
+    cleanedCode = cleanedCode.replace(/\n/g, '<br>'); // Converts new lines to <br> for HTML display
+    return cleanedCode;
 }
 
 function isCode(text) {
-    // Basic JavaScript syntax patterns
+    // Initialize an array of regular expressions for different programming languages
     const patterns = [
-        /\b(function|var|let|const|if|else|return|class|import|export)\b/, // JS keywords
-        /[{;}]/, // Common JS syntax characters
-        /\bconsole\.log\(/, // Example of common function call in JS
-        /=>/, // Arrow functions
-        /[\+\-\*\/]=?/ // Mathematical operators
+        // JavaScript patterns include keywords and syntax commonly used in JavaScript
+        /\b(function|var|let|const|if|else|return|class|import|export|console\.log|=>)\b/,
+        /[{;}]/, // Matches common JavaScript syntax characters like curly braces and semicolons
+
+        // Java patterns include keywords and syntax commonly used in Java
+        /\b(public|private|protected|class|import|package|new|return|void)\b/,
+        /[{;}]/, // Matches common Java syntax characters like curly braces and semicolons
+
+        // Python patterns include keywords and syntax commonly used in Python
+        /\b(def|import|as|from|return|class|if|elif|else|print)\b/,
+        /[:]/, // Matches colons used in Python syntax for defining blocks
+
+        // C patterns include keywords and syntax commonly used in C
+        /\b(int|char|float|double|struct|return|if|else|#include)\b/,
+        /[{};]/, // Matches common C syntax characters like curly braces and semicolons
     ];
 
-    return patterns.filter(pattern => pattern.test(text)).length >= 3;
+    // Apply each pattern to the text to see if it matches
+    const matches = patterns.filter(pattern => pattern.test(text));
+
+    // Return true if three or more patterns match indicating the text is likely code
+    return matches.length >= 3;
 }
 
-// apiHelper.js
 async function fetchFromOpenAI(text, promptText, temperature, num_tokens) {
     const userTokens = text.split(/\s+/).length;  // A rough estimate based on spaces
     const systemTokens = promptText.split(/\s+/).length;
